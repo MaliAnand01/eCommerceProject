@@ -13,7 +13,7 @@ const Navbar = () => {
       <nav className="w-full bg-white shadow sticky top-0 z-50">
         <div className="container mx-auto px-6 py-4 flex justify-between items-center">
           {/* Logo */}
-          <Link to="/home">
+          <Link to="/">
             <img src={logo} alt="ShopEase Logo" className="h-10 w-auto" />
           </Link>
 
@@ -29,7 +29,7 @@ const Navbar = () => {
           <ul className="hidden lg:flex space-x-8 text-gray-700 items-center">
             <li>
               <NavLink
-                to="/home"
+                to="/"
                 className={({ isActive }) =>
                   isActive
                     ? "text-black font-semibold border-b-2"

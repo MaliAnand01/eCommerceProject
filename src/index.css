@@ -11,7 +11,18 @@
   }
 }
 
-
 @utility fade-in {
   animation: fadeIn 1s ease-out forwards;
+}
+
+.swiper-pagination-bullet {
+  background: gray !important;
+  opacity: 0.6 !important;
+  width: 10px !important;
+  height: 10px !important;
+}
+
+.swiper-pagination-bullet-active {
+  background: #000 !important; /* yellow-400 */
+  opacity: 1 !important;
 }
