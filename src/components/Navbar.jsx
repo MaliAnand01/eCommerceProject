@@ -1,40 +1,62 @@
 import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { Menu, X, ShoppingCart } from "lucide-react";
+import { Menu, X, ShoppingCart, Sun, Moon } from "lucide-react";
 import logo from "../assets/logo.png";
 import { useContext } from "react";
 import { CartContext } from "../context/CartContext";
+import { ThemeContext } from "../context/ThemeContext";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const { totalItems } = useContext(CartContext);
+  const { theme, toggleTheme } = useContext(ThemeContext);
 
   return (
     <>
       {/* Navbar */}
-      <nav className="w-full bg-white shadow sticky top-0 z-50">
+      <nav
+        className={`w-full shadow sticky top-0 z-50 ${
+          theme === "dark" ? "bg-gray-900 border-b border-gray-800" : "bg-white"
+        }`}
+      >
         <div className="container mx-auto px-6 py-4 flex justify-between items-center">
           {/* Logo */}
           <Link to="/">
-            <img src={logo} alt="ShopEase Logo" className="h-10 w-auto" />
+            <img
+              src={logo}
+              alt="ShopEase Logo"
+              className={`h-10 w-auto ${
+                theme === "dark" ? "invert brightness-0" : ""
+              }`}
+            />
           </Link>
 
           {/* Hamburger Icon */}
           <button
-            className="lg:hidden text-gray-700"
+            className={`lg:hidden ${
+              theme === "dark" ? "text-gray-300" : "text-gray-700"
+            }`}
             onClick={() => setOpen(true)}
           >
             <Menu size={28} />
           </button>
 
           {/* desktop menu */}
-          <ul className="hidden lg:flex space-x-8 text-gray-700 items-center">
+          <ul
+            className={`hidden lg:flex space-x-8 items-center ${
+              theme === "dark" ? "text-white" : "text-gray-700"
+            }`}
+          >
             <li>
               <NavLink
                 to="/"
                 className={({ isActive }) =>
                   isActive
-                    ? "text-black font-semibold border-b-2"
+                    ? `font-semibold border-b-2 ${
+                        theme === "dark" ? "text-white" : "text-black"
+                      }`
+                    : theme === "dark"
+                    ? "text-gray-300 hover:text-white"
                     : "text-gray-700 hover:text-gray-900"
                 }
               >
@@ -47,7 +69,11 @@ const Navbar = () => {
                 to="/about"
                 className={({ isActive }) =>
                   isActive
-                    ? "text-black font-semibold border-b-2"
+                    ? `font-semibold border-b-2 ${
+                        theme === "dark" ? "text-white" : "text-black"
+                      }`
+                    : theme === "dark"
+                    ? "text-gray-300 hover:text-white"
                     : "text-gray-700 hover:text-gray-900"
                 }
               >
@@ -60,7 +86,13 @@ const Navbar = () => {
                 to="/login"
                 className={({ isActive }) =>
                   isActive
-                    ? "px-4 py-2 rounded-xl border text-black font-semibold border-black hover:bg-gray-100"
+                    ? `px-4 py-2 rounded-xl border font-semibold ${
+                        theme === "dark"
+                          ? "text-black border-white bg-white hover:bg-gray-200"
+                          : "text-black border-black hover:bg-gray-100"
+                      }`
+                    : theme === "dark"
+                    ? "px-4 py-2 rounded-xl border border-gray-800 text-white hover:bg-gray-800"
                     : "px-4 py-2 rounded-xl border border-gray-300 text-gray-700 hover:bg-gray-100"
                 }
               >
@@ -71,7 +103,11 @@ const Navbar = () => {
             <li>
               <Link
                 to="/signup"
-                className="px-4 py-2 rounded-xl bg-black text-white hover:bg-gray-800"
+                className={`px-4 py-2 rounded-xl ${
+                  theme === "dark"
+                    ? "bg-white text-black hover:bg-gray-200"
+                    : "bg-black text-white hover:bg-gray-800"
+                }`}
               >
                 Signup
               </Link>
@@ -80,7 +116,11 @@ const Navbar = () => {
             <li>
               <Link
                 to="/cart"
-                className="relative px-4 py-2 rounded-xl border border-gray-300 text-gray-700 hover:bg-gray-100 flex items-center gap-2"
+                className={`relative px-4 py-2 rounded-xl border flex items-center gap-2 ${
+                  theme === "dark"
+                    ? "border-gray-800 text-white hover:bg-gray-800"
+                    : "border-gray-300 text-gray-700 hover:bg-gray-100"
+                }`}
               >
                 <ShoppingCart size={20} />
                 {totalItems > 0 && (
@@ -89,6 +129,19 @@ const Navbar = () => {
                   </span>
                 )}
               </Link>
+            </li>
+
+            <li>
+              <button
+                onClick={toggleTheme}
+                className={`p-2 rounded-lg ${
+                  theme === "dark"
+                    ? "bg-white text-black hover:bg-gray-200"
+                    : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+                }`}
+              >
+                {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
+              </button>
             </li>
           </ul>
         </div>
@@ -105,9 +158,9 @@ const Navbar = () => {
       ></div>
 
       <div
-        className={`fixed top-0 right-0 h-full w-[60%] max-w-sm bg-white shadow-xl z-50 transform transition-transform duration-300 ${
-          open ? "translate-x-0" : "translate-x-full"
-        }`}
+        className={`fixed top-0 right-0 h-full w-[60%] max-w-sm shadow-xl z-50 transform transition-transform duration-300 ${
+          theme === "dark" ? "bg-gray-900 border-l border-gray-800" : "bg-white"
+        } ${open ? "translate-x-0" : "translate-x-full"}`}
       >
         {/* Close Button */}
         <button
@@ -118,11 +171,19 @@ const Navbar = () => {
         </button>
 
         {/* menu links */}
-        <ul className="flex flex-col gap-6 px-6 text-gray-800 text-lg font-medium">
+        <ul
+          className={`flex flex-col gap-6 px-6 text-lg font-medium ${
+            theme === "dark" ? "text-white" : "text-gray-800"
+          }`}
+        >
           <NavLink
             to="/home"
             onClick={() => setOpen(false)}
-            className="hover:text-black transition"
+            className={
+              theme === "dark"
+                ? "hover:text-white transition"
+                : "hover:text-black transition"
+            }
           >
             Home
           </NavLink>
@@ -130,7 +191,11 @@ const Navbar = () => {
           <NavLink
             to="/about"
             onClick={() => setOpen(false)}
-            className="hover:text-black transition"
+            className={
+              theme === "dark"
+                ? "hover:text-white transition"
+                : "hover:text-black transition"
+            }
           >
             About
           </NavLink>
@@ -138,7 +203,11 @@ const Navbar = () => {
           <NavLink
             to="/login"
             onClick={() => setOpen(false)}
-            className="px-4 py-2 rounded-xl border border-gray-300 hover:bg-gray-100"
+            className={
+              theme === "dark"
+                ? "px-4 py-2 rounded-xl border border-gray-800 hover:bg-gray-800"
+                : "px-4 py-2 rounded-xl border border-gray-300 hover:bg-gray-100"
+            }
           >
             Login
           </NavLink>
@@ -146,7 +215,11 @@ const Navbar = () => {
           <Link
             to="/signup"
             onClick={() => setOpen(false)}
-            className="px-4 py-2 rounded-xl bg-black text-white hover:bg-gray-800"
+            className={
+              theme === "dark"
+                ? "px-4 py-2 rounded-xl bg-white text-black hover:bg-gray-200"
+                : "px-4 py-2 rounded-xl bg-black text-white hover:bg-gray-800"
+            }
           >
             Signup
           </Link>
@@ -154,7 +227,11 @@ const Navbar = () => {
           <Link
             to="/cart"
             onClick={() => setOpen(false)}
-            className="relative px-4 py-2 rounded-xl border border-gray-300 hover:bg-gray-100 flex items-center gap-2"
+            className={`relative px-4 py-2 rounded-xl border flex items-center gap-2 ${
+              theme === "dark"
+                ? "border-gray-800 hover:bg-gray-800"
+                : "border-gray-300 hover:bg-gray-100"
+            }`}
           >
             <ShoppingCart size={20} />
             Cart
@@ -164,6 +241,17 @@ const Navbar = () => {
               </span>
             )}
           </Link>
+
+          <button
+            onClick={toggleTheme}
+            className={`p-2 rounded-lg ${
+              theme === "dark"
+                ? "bg-white text-black hover:bg-gray-200"
+                : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+            }`}
+          >
+            {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
+          </button>
         </ul>
       </div>
     </>

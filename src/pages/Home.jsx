@@ -3,10 +3,13 @@ import axios from "axios";
 import Card from "../components/Card";
 import { useSearchParams } from "react-router-dom";
 import Hero from "../components/Hero";
+import { useContext } from "react";
+import { ThemeContext } from "../context/ThemeContext";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
+  const { theme } = useContext(ThemeContext);
 
   const [searchParam, setSearchParam] = useSearchParams();
   const searchText = searchParam.get("q") || "";
@@ -46,9 +49,15 @@ const Home = () => {
       <Hero />
 
       {/* Products Section */}
-      <section className="py-16 bg-white">
+      <section
+        className={`py-16 ${theme === "dark" ? "bg-gray-900" : "bg-white"}`}
+      >
         <div className="container mx-auto px-5 text-center">
-          <h2 className="text-3xl font-bold mb-8 text-gray-900">
+          <h2
+            className={`text-3xl font-bold mb-8 ${
+              theme === "dark" ? "text-white" : "text-gray-900"
+            }`}
+          >
             Featured Products
           </h2>
 
@@ -59,14 +68,18 @@ const Home = () => {
               onChange={handleSearch}
               type="search"
               placeholder="Search by product name"
-              className="
+              className={`
                 w-full max-w-md 
                 text-lg px-4 py-3 
-                border border-gray-400 rounded-2xl
-                font-medium text-black 
-                placeholder:text-gray-500
-                focus:outline-none focus:ring-4 focus:ring-black/20
-              "
+                border rounded-2xl
+                font-medium
+                focus:outline-none focus:ring-4
+                ${
+                  theme === "dark"
+                    ? "bg-gray-800 border-gray-700 text-white placeholder:text-gray-400 focus:ring-white/20"
+                    : "border-gray-400 text-black placeholder:text-gray-500 focus:ring-black/20"
+                }
+              `}
             />
           </div>
 
@@ -77,7 +90,9 @@ const Home = () => {
               Array.from({ length: 8 }).map((_, i) => (
                 <div
                   key={i}
-                  className="w-full max-w-[300px] mx-auto bg-gray-200 animate-pulse h-[350px] rounded-xl"
+                  className={`w-full max-w-[300px] mx-auto animate-pulse h-[350px] rounded-xl ${
+                    theme === "dark" ? "bg-gray-800" : "bg-gray-200"
+                  }`}
                 ></div>
               ))}
 
@@ -102,7 +117,11 @@ const Home = () => {
 
           {/* No result */}
           {!loading && products.length === 0 && (
-            <p className="mt-12 text-gray-500 text-lg">
+            <p
+              className={`mt-12 text-lg ${
+                theme === "dark" ? "text-gray-400" : "text-gray-500"
+              }`}
+            >
               No products found for "{searchText}".
             </p>
           )}

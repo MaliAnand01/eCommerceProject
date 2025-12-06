@@ -1,9 +1,25 @@
-import { useReducer } from "react";
+import { useReducer, useEffect } from "react";
 import CartContext from "./CartContext";
 import { cartReducer, initialState } from "../reducer/cartReducer";
 
 const CartProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(cartReducer, initialState);
+  const getInitialState = () => {
+    const savedCart = localStorage.getItem("cart");
+    if (savedCart) {
+      try {
+        return JSON.parse(savedCart);
+      } catch {
+        return initialState;
+      }
+    }
+    return initialState;
+  };
+
+  const [state, dispatch] = useReducer(cartReducer, getInitialState());
+
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(state));
+  }, [state]);
 
   const addItem = (product, quantity = 1) => {
     dispatch({
