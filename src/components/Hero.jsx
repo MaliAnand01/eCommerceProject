@@ -43,7 +43,7 @@ const Hero = () => {
       <div
         className={`absolute inset-0 flex flex-col justify-center items-center text-center px-6 z-10 pointer-events-none ${
           theme === "dark"
-            ? "bg-gray-900/50 text-white"
+            ? "bg-black/30 text-white"
             : "bg-black/30 text-white"
         }`}
       >
