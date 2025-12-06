@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ShoppingCart } from "lucide-react";
 import logo from "../assets/logo.png";
+import { useContext } from "react";
+import { CartContext } from "../context/CartContext";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
-
+  const { totalItems } = useContext(CartContext);
 
   return (
     <>
@@ -74,11 +76,25 @@ const Navbar = () => {
                 Signup
               </Link>
             </li>
+
+            <li>
+              <Link
+                to="/cart"
+                className="relative px-4 py-2 rounded-xl border border-gray-300 text-gray-700 hover:bg-gray-100 flex items-center gap-2"
+              >
+                <ShoppingCart size={20} />
+                {totalItems > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                    {totalItems > 99 ? "99+" : totalItems}
+                  </span>
+                )}
+              </Link>
+            </li>
           </ul>
         </div>
       </nav>
 
-    {/* Mobile menu */}
+      {/* Mobile menu */}
       <div
         onClick={() => setOpen(false)}
         className={`fixed inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-300 ${
@@ -88,7 +104,6 @@ const Navbar = () => {
         } z-40`}
       ></div>
 
-      
       <div
         className={`fixed top-0 right-0 h-full w-[60%] max-w-sm bg-white shadow-xl z-50 transform transition-transform duration-300 ${
           open ? "translate-x-0" : "translate-x-full"
@@ -134,6 +149,20 @@ const Navbar = () => {
             className="px-4 py-2 rounded-xl bg-black text-white hover:bg-gray-800"
           >
             Signup
+          </Link>
+
+          <Link
+            to="/cart"
+            onClick={() => setOpen(false)}
+            className="relative px-4 py-2 rounded-xl border border-gray-300 hover:bg-gray-100 flex items-center gap-2"
+          >
+            <ShoppingCart size={20} />
+            Cart
+            {totalItems > 0 && (
+              <span className="bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                {totalItems > 99 ? "99+" : totalItems}
+              </span>
+            )}
           </Link>
         </ul>
       </div>

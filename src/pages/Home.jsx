@@ -25,7 +25,7 @@ const Home = () => {
         setProducts(response.data.products || []);
       } catch (err) {
         console.log(err);
-        
+
         setProducts([]);
       }
 
@@ -95,6 +95,7 @@ const Home = () => {
                   tag1={product.tags[0]}
                   tag2={product.tags[1]}
                   pId={product.id}
+                  product={product}
                 />
               ))}
           </div>

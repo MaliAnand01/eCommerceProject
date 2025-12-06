@@ -1,6 +1,8 @@
 import React from "react";
-import { Heart, Star, ExternalLink } from "lucide-react";
+import { Heart, Star, ExternalLink, ShoppingCart } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { CartContext } from "../context/CartContext";
 
 const Card = ({
   image,
@@ -12,7 +14,30 @@ const Card = ({
   rating,
   discount,
   pId,
+  product,
 }) => {
+  const { addItem } = useContext(CartContext);
+
+  const handleAddToCart = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (product) {
+      addItem(product, 1);
+    } else {
+      // Fallback if product object is not passed
+      addItem(
+        {
+          id: pId,
+          title,
+          price,
+          thumbnail: image,
+          brand,
+        },
+        1
+      );
+    }
+  };
+
   return (
     <>
       <div
@@ -83,12 +108,21 @@ const Card = ({
             <p className="text-[10px] text-gray-600">{discount}% off</p>
           </div>
 
-          <Link
-            to={`/product/${pId}`}
-            className="px-4 py-2 bg-black text-white rounded-md flex items-center gap-1 hover:bg-gray-800 max-sm:px-3 max-sm:py-1.5"
-          >
-            View <ExternalLink size={16} />
-          </Link>
+          <div className="flex gap-2">
+            <Link
+              to={`/product/${pId}`}
+              className="px-4 py-2 bg-black text-white rounded-md flex items-center gap-1 hover:bg-gray-800 max-sm:px-3 max-sm:py-1.5"
+            >
+              View <ExternalLink size={16} />
+            </Link>
+            <button
+              onClick={handleAddToCart}
+              className="px-4 py-2 bg-gray-800 text-white rounded-md flex items-center gap-1 hover:bg-gray-700 max-sm:px-3 max-sm:py-1.5"
+              title="Add to Cart"
+            >
+              <ShoppingCart size={16} />
+            </button>
+          </div>
         </div>
       </div>
     </>

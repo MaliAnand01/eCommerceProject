@@ -3,11 +3,14 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { ChevronLeft } from "lucide-react";
+import { useContext } from "react";
+import { CartContext } from "../context/CartContext";
 
 const Product = () => {
   const [product, setProduct] = useState({});
+  const [quantity, setQuantity] = useState(1);
   const { id } = useParams();
-
+  const { addItem } = useContext(CartContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,7 +26,7 @@ const Product = () => {
     <>
       <div className="pt-6 mx-6 bg-gray-50">
         <button
-        onClick={()=>navigate(-1)}
+          onClick={() => navigate(-1)}
           className="px-4 py-2 inline-flex items-center rounded-lg bg-gray-200 text-gray-900 hover:bg-gray-300 transition"
         >
           <ChevronLeft className="pt-0.5" /> <span>Back Home</span>
@@ -102,13 +105,44 @@ const Product = () => {
               </ul>
             </div>
 
-            <div className="flex gap-4">
-              <button className="px-6 py-3 cursor-pointer rounded-lg bg-black text-white font-semibold hover:bg-gray-700 transition">
-                Add to Cart
-              </button>
-              <button className="px-6 py-3 rounded-lg border border-black text-black font-semibold  transition duration-500 cursor-pointer hover:bg-black hover:text-white">
-                Buy Now
-              </button>
+            <div className="space-y-4">
+              <div className="flex items-center gap-4">
+                <label className="text-gray-700 font-medium">Quantity:</label>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                    className="px-3 py-1 border border-gray-300 rounded-lg hover:bg-gray-100"
+                  >
+                    -
+                  </button>
+                  <span className="px-4 py-1 border border-gray-300 rounded-lg min-w-[60px] text-center">
+                    {quantity}
+                  </span>
+                  <button
+                    onClick={() =>
+                      setQuantity(Math.min(product?.stock || 100, quantity + 1))
+                    }
+                    className="px-3 py-1 border border-gray-300 rounded-lg hover:bg-gray-100"
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+
+              <div className="flex gap-4">
+                <button
+                  onClick={() => {
+                    addItem(product, quantity);
+                    setQuantity(1);
+                  }}
+                  className="px-6 py-3 cursor-pointer rounded-lg bg-black text-white font-semibold hover:bg-gray-700 transition"
+                >
+                  Add to Cart
+                </button>
+                <button className="px-6 py-3 rounded-lg border border-black text-black font-semibold  transition duration-500 cursor-pointer hover:bg-black hover:text-white">
+                  Buy Now
+                </button>
+              </div>
             </div>
           </div>
         </div>
