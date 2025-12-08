@@ -19,7 +19,7 @@ const Cart = () => {
     return (
       <div
         className={`min-h-screen pt-24 pb-16 ${
-          theme === "dark" ? "bg-gray-900" : "bg-gray-50"
+          theme === "dark" ? "bg-black" : "bg-gray-50"
         }`}
       >
         <div className="container mx-auto px-4">
@@ -59,7 +59,7 @@ const Cart = () => {
   return (
     <div
       className={`min-h-screen pt-24 pb-16 ${
-        theme === "dark" ? "bg-gray-900" : "bg-gray-50"
+        theme === "dark" ? "bg-black" : "bg-gray-50"
       }`}
     >
       <div className="container mx-auto px-4">

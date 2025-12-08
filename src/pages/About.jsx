@@ -17,7 +17,7 @@ const About = () => {
   return (
     <div
       className={`min-h-screen pt-5 pb-20 ${
-        theme === "dark" ? "bg-gray-900" : "bg-gray-50"
+        theme === "dark" ? "bg-black" : "bg-gray-50"
       }`}
     >
       <div className="container mx-auto px-4 space-y-14">

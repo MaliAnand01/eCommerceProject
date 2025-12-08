@@ -27,9 +27,7 @@ const Product = () => {
   return (
     <>
       <div
-        className={`pt-6 mx-6 ${
-          theme === "dark" ? "bg-gray-900" : "bg-gray-50"
-        }`}
+        className={`pt-6 mx-6 ${theme === "dark" ? "bg-black" : "bg-gray-50"}`}
       >
         <button
           onClick={() => navigate(-1)}
@@ -44,7 +42,7 @@ const Product = () => {
       </div>
       <div
         className={`min-h-screen pt-24 pb-16 ${
-          theme === "dark" ? "bg-gray-900" : "bg-gray-50"
+          theme === "dark" ? "bg-black" : "bg-gray-50"
         }`}
       >
         <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-12">

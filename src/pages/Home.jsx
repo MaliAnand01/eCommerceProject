@@ -50,7 +50,7 @@ const Home = () => {
 
       {/* Products Section */}
       <section
-        className={`py-16 ${theme === "dark" ? "bg-gray-900" : "bg-white"}`}
+        className={`py-16 ${theme === "dark" ? "bg-black" : "bg-white"}`}
       >
         <div className="container mx-auto px-5 text-center">
           <h2

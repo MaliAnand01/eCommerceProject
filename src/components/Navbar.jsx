@@ -16,7 +16,7 @@ const Navbar = () => {
       {/* Navbar */}
       <nav
         className={`w-full shadow sticky top-0 z-50 ${
-          theme === "dark" ? "bg-gray-900 border-b border-gray-800" : "bg-white"
+          theme === "dark" ? "bg-black border-b border-gray-800" : "bg-white"
         }`}
       >
         <div className="container mx-auto px-6 py-4 flex justify-between items-center">
@@ -159,7 +159,7 @@ const Navbar = () => {
 
       <div
         className={`fixed top-0 right-0 h-full w-[60%] max-w-sm shadow-xl z-50 transform transition-transform duration-300 ${
-          theme === "dark" ? "bg-gray-900 border-l border-gray-800" : "bg-white"
+          theme === "dark" ? "bg-black border-l border-gray-800" : "bg-white"
         } ${open ? "translate-x-0" : "translate-x-full"}`}
       >
         {/* Close Button */}

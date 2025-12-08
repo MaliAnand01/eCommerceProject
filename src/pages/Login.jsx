@@ -12,7 +12,7 @@ const Login = () => {
   return (
     <div
       className={`min-h-screen flex justify-center items-center px-4 ${
-        theme === "dark" ? "bg-gray-900" : "bg-gray-100"
+        theme === "dark" ? "bg-black" : "bg-gray-100"
       }`}
     >
       <div

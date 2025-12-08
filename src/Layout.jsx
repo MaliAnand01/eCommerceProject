@@ -12,12 +12,12 @@ const Layout = () => {
     <div
       className={
         theme === "dark"
-          ? "dark bg-gray-900 min-h-screen"
+          ? "dark bg-black min-h-screen"
           : "bg-white min-h-screen"
       }
     >
       <Navbar />
-      <main className={theme === "dark" ? "bg-gray-900" : "bg-white"}>
+      <main className={theme === "dark" ? "bg-black" : "bg-white"}>
         <Outlet />
       </main>
       <Footer />
