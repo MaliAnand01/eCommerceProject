@@ -1,9 +1,12 @@
-import React from "react";
+import React, {memo} from "react";
 import { Heart, Star, ExternalLink, ShoppingCart } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { CartContext } from "../context/CartContext";
 import { ThemeContext } from "../context/ThemeContext";
+import { AuthContext } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 const Card = ({
   image,
@@ -20,13 +23,23 @@ const Card = ({
   const { addItem } = useContext(CartContext);
   const { theme } = useContext(ThemeContext);
 
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
+
   const handleAddToCart = (e) => {
     e.preventDefault();
     e.stopPropagation();
+
+    if (!user) {
+      toast.error("You must be logged in to add items to the cart!");
+      navigate("/login");
+      return;
+    }
+
     if (product) {
       addItem(product, 1);
+      toast.success("Item added to cart!");
     } else {
-      // Fallback if product object is not passed
       addItem(
         {
           id: pId,
@@ -37,6 +50,7 @@ const Card = ({
         },
         1
       );
+      toast.success("Item added to cart!");
     }
   };
 
@@ -44,14 +58,14 @@ const Card = ({
     <>
       <div
         className={`
-        w-full max-w-[300px] mx-auto 
+        w-full lg:max-w-[400px] mx-auto 
         rounded-2xl p-6 
         flex flex-col justify-between 
-        shadow-lg transition-transform duration-300 
-        hover:scale-[1.02] hover:shadow-xl
+        transition-all duration-500
+        hover:scale-[1.02]
         ${
           theme === "dark"
-            ? "bg-gray-800 border border-gray-700"
+            ? "bg-[#111] border border-[#111]"
             : "bg-white border border-gray-200"
         }
       `}
@@ -64,7 +78,7 @@ const Card = ({
               <h4
                 className={`text-[10px] px-2 py-1 rounded font-medium ${
                   theme === "dark"
-                    ? "bg-gray-800 text-gray-300"
+                    ? "bg-[#222] text-gray-300"
                     : "bg-gray-100 text-gray-500"
                 }`}
               >
@@ -75,7 +89,7 @@ const Card = ({
                 <h4
                   className={`text-[10px] px-2 py-1 rounded font-medium ${
                     theme === "dark"
-                      ? "bg-gray-800 text-gray-300"
+                      ? "bg-[#222] text-gray-300"
                       : "bg-gray-100 text-gray-500"
                   }`}
                 >
@@ -100,7 +114,7 @@ const Card = ({
             <img
               src={image}
               alt="logo"
-              className="h-[150px] w-[150px] p-1 object-contain max-sm:h-[120px] max-sm:w-[120px]"
+              className="h-[250px] w-[250px] p-1 object-contain max-sm:h-[120px] max-sm:w-[120px]"
             />
           </div>
         </div>
@@ -162,7 +176,7 @@ const Card = ({
           <div className="flex gap-2">
             <Link
               to={`/product/${pId}`}
-              className="px-4 py-2 bg-black text-white rounded-md flex items-center gap-1 hover:bg-gray-800 max-sm:px-3 max-sm:py-1.5"
+              className="px-4 py-2 bg-black text-white rounded-md flex items-center gap-1 hover:bg-[#222] max-sm:px-3 max-sm:py-1.5"
             >
               View <ExternalLink size={16} />
             </Link>
@@ -171,7 +185,7 @@ const Card = ({
               className={`px-4 py-2 rounded-md flex items-center gap-1 max-sm:px-3 max-sm:py-1.5 ${
                 theme === "dark"
                   ? "bg-white text-black hover:bg-gray-200"
-                  : "bg-gray-800 text-white hover:bg-gray-700"
+                  : "bg-black text-white hover:bg-gray-700"
               }`}
               title="Add to Cart"
             >
@@ -184,4 +198,4 @@ const Card = ({
   );
 };
 
-export default Card;
+export default memo(Card);

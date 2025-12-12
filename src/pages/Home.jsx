@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext, useMemo } from "react";
 import axios from "axios";
 import Card from "../components/Card";
 import { useSearchParams } from "react-router-dom";
 import Hero from "../components/Hero";
-import { useContext } from "react";
 import { ThemeContext } from "../context/ThemeContext";
+import { Search } from "lucide-react";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -14,34 +14,54 @@ const Home = () => {
   const [searchParam, setSearchParam] = useSearchParams();
   const searchText = searchParam.get("q") || "";
 
+  const [query, setQuery] = useState(searchText);
+
+  // Fetch products whenever searchText changes
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-
       try {
-        let url = !searchText
+        const url = !searchText
           ? "https://dummyjson.com/products"
           : `https://dummyjson.com/products/search?q=${searchText}`;
 
         const response = await axios.get(url);
-
         setProducts(response.data.products || []);
       } catch (err) {
-        console.log(err);
-
+        console.error(err);
         setProducts([]);
       }
-
       setLoading(false);
     };
 
     fetchData();
   }, [searchText]);
 
+  // Update URL query param
   const handleSearch = (e) => {
     const value = e.target.value;
+    setQuery(value);
     setSearchParam(value ? { q: value } : {});
   };
+
+  // Memoize the product cards
+  const productCards = useMemo(() => {
+    return products.map((product) => (
+      <Card
+        key={product.id}
+        image={product.thumbnail}
+        brand={product.brand}
+        title={product.title}
+        price={product.price}
+        rating={product.rating}
+        discount={product.discountPercentage}
+        tag1={product.tags?.[0]}
+        tag2={product.tags?.[1]}
+        pId={product.id}
+        product={product}
+      />
+    ));
+  }, [products]);
 
   return (
     <>
@@ -50,6 +70,7 @@ const Home = () => {
 
       {/* Products Section */}
       <section
+        id="products"
         className={`py-16 ${theme === "dark" ? "bg-black" : "bg-white"}`}
       >
         <div className="container mx-auto px-5 text-center">
@@ -62,57 +83,38 @@ const Home = () => {
           </h2>
 
           {/* Search Box */}
-          <div className="mb-10 flex justify-center">
+          <div className="mb-10 max-w-md mx-auto relative">
             <input
-              value={searchText}
-              onChange={handleSearch}
               type="search"
+              value={query}
+              onChange={handleSearch}
               placeholder="Search by product name"
-              className={`
-                w-full max-w-md 
-                text-lg px-4 py-3 
-                border rounded-2xl
-                font-medium
-                focus:outline-none focus:ring-4
-                ${
-                  theme === "dark"
-                    ? "bg-gray-800 border-gray-700 text-white placeholder:text-gray-400 focus:ring-white/20"
-                    : "border-gray-400 text-black placeholder:text-gray-500 focus:ring-black/20"
-                }
-              `}
+              className={`w-full text-lg px-4 py-3 pl-12 rounded-full font-medium focus:outline-none focus:ring-4 focus:ring-opacity-20 transition-shadow ${
+                theme === "dark"
+                  ? "bg-[#111] border border-[#222] text-white placeholder:text-gray-400 focus:ring-white shadow-sm hover:shadow-md"
+                  : "bg-white border border-gray-300 text-black placeholder:text-gray-500 focus:ring-black shadow-sm hover:shadow-md"
+              }`}
+            />
+            <Search
+              size={20}
+              className={`absolute top-1/2 left-4 -translate-y-1/2 ${
+                theme === "dark" ? "text-white" : "text-gray-700"
+              }`}
             />
           </div>
 
           {/* Products Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 px-4">
-            {/* Loading Skeletons */}
-            {loading &&
-              Array.from({ length: 8 }).map((_, i) => (
-                <div
-                  key={i}
-                  className={`w-full max-w-[300px] mx-auto animate-pulse h-[350px] rounded-xl ${
-                    theme === "dark" ? "bg-gray-800" : "bg-gray-200"
-                  }`}
-                ></div>
-              ))}
-
-            {/* Product Cards */}
-            {!loading &&
-              products.map((product) => (
-                <Card
-                  key={product.id}
-                  image={product.thumbnail}
-                  brand={product.brand}
-                  title={product.title}
-                  price={product.price}
-                  rating={product.rating}
-                  discount={product.discountPercentage}
-                  tag1={product.tags[0]}
-                  tag2={product.tags[1]}
-                  pId={product.id}
-                  product={product}
-                />
-              ))}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-8 px-4">
+            {loading
+              ? Array.from({ length: 8 }).map((_, i) => (
+                  <div
+                    key={i}
+                    className={`w-full max-w-[300px] mx-auto animate-pulse h-[350px] rounded-xl ${
+                      theme === "dark" ? "bg-gray-800" : "bg-gray-200"
+                    }`}
+                  ></div>
+                ))
+              : productCards}
           </div>
 
           {/* No result */}

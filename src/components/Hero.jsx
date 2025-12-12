@@ -53,7 +53,8 @@ const Hero = () => {
         <p className="text-lg md:text-xl mt-3 fade-in">
           Premium Products • Best Prices • Fast Delivery
         </p>
-        <button
+        <a
+        href="#products"
           className={`px-10 mt-4 py-3 rounded-xl font-semibold shadow transition duration-300 cursor-pointer hover:scale-105 fade-in pointer-events-auto ${
             theme === "dark"
               ? "bg-white text-black hover:bg-gray-200"
@@ -61,7 +62,7 @@ const Hero = () => {
           }`}
         >
           Shop Now
-        </button>
+        </a>
       </div>
     </div>
   );

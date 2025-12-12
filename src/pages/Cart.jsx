@@ -46,7 +46,7 @@ const Cart = () => {
             </p>
             <Link
               to="/"
-              className="inline-block px-6 py-3 bg-black text-white rounded-lg font-semibold hover:bg-gray-800 transition"
+              className="inline-block px-6 py-3 bg-black text-white rounded-lg font-semibold hover:bg-[#222] transition"
             >
               Continue Shopping
             </Link>
@@ -87,7 +87,7 @@ const Cart = () => {
                   key={item.id}
                   className={`rounded-xl shadow-sm border p-6 flex flex-col sm:flex-row gap-4 ${
                     theme === "dark"
-                      ? "bg-gray-800 border-gray-700"
+                      ? "bg-[#111] border-[#222]"
                       : "bg-white border-gray-200"
                   }`}
                 >
@@ -96,7 +96,7 @@ const Cart = () => {
                       src={item.thumbnail}
                       alt={item.title}
                       className={`w-32 h-32 object-contain rounded-lg border ${
-                        theme === "dark" ? "border-gray-700" : "border-gray-200"
+                        theme === "dark" ? "border-[#222]" : "border-gray-200"
                       }`}
                     />
                   </div>
@@ -136,7 +136,7 @@ const Cart = () => {
                           }
                           className={`p-2 border rounded-lg ${
                             theme === "dark"
-                              ? "border-gray-700 hover:bg-gray-700 text-white"
+                              ? "border-[#222] hover:bg-[#222] text-white"
                               : "border-gray-300 hover:bg-gray-100"
                           }`}
                         >
@@ -145,7 +145,7 @@ const Cart = () => {
                         <span
                           className={`px-4 py-2 border rounded-lg min-w-[60px] text-center font-medium ${
                             theme === "dark"
-                              ? "border-gray-700 text-white"
+                              ? "border-[#222] text-white"
                               : "border-gray-300"
                           }`}
                         >
@@ -157,7 +157,7 @@ const Cart = () => {
                           }
                           className={`p-2 border rounded-lg ${
                             theme === "dark"
-                              ? "border-gray-700 hover:bg-gray-700 text-white"
+                              ? "border-[#222] hover:bg-[#222] text-white"
                               : "border-gray-300 hover:bg-gray-100"
                           }`}
                         >
@@ -193,7 +193,7 @@ const Cart = () => {
               <div
                 className={`rounded-xl shadow-sm border p-6 sticky top-24 ${
                   theme === "dark"
-                    ? "bg-gray-800 border-gray-700"
+                    ? "bg-[#111] border-[#222]"
                     : "bg-white border-gray-200"
                 }`}
               >
@@ -224,7 +224,7 @@ const Cart = () => {
                   </div>
                   <div
                     className={`border-t pt-4 ${
-                      theme === "dark" ? "border-gray-700" : "border-gray-200"
+                      theme === "dark" ? "border-[#222]" : "border-gray-200"
                     }`}
                   >
                     <div
@@ -238,7 +238,7 @@ const Cart = () => {
                   </div>
                 </div>
 
-                <button className="w-full px-6 py-3 bg-black text-white rounded-lg font-semibold hover:bg-gray-800 transition mb-4">
+                <button className="w-full px-6 py-3 bg-black text-white rounded-lg font-semibold hover:bg-[#222] transition mb-4 cursor-pointer active:scale-95">
                   Proceed to Checkout
                 </button>
 

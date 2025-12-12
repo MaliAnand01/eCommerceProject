@@ -11,7 +11,7 @@ const About = () => {
     "https://cdn-icons-png.flaticon.com/128/5969/5969002.png",
     "https://cdn-icons-png.flaticon.com/128/49/49004.png",
     "https://cdn-icons-png.flaticon.com/128/0/747.png",
-    "https://cdn-icons-png.flaticon.com/128/10096/10096351.png",
+    "https://cdn-icons-png.flaticon.com/128/6033/6033713.png",
   ];
 
   return (
@@ -45,7 +45,7 @@ const About = () => {
         <div
           className={`p-8 rounded-xl shadow-md border ${
             theme === "dark"
-              ? "bg-gray-800 border-gray-700"
+              ? "bg-[#111] border-[#222]"
               : "bg-white border-gray-200"
           }`}
         >
@@ -71,7 +71,7 @@ const About = () => {
         <div
           className={`p-8 rounded-xl shadow-md border ${
             theme === "dark"
-              ? "bg-gray-800 border-gray-700"
+              ? "bg-[#111] border-[#222]"
               : "bg-white border-gray-200"
           }`}
         >
@@ -86,7 +86,7 @@ const About = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div
               className={`p-6 rounded-lg shadow-sm ${
-                theme === "dark" ? "bg-gray-800" : "bg-gray-50"
+                theme === "dark" ? "bg-[#222]" : "bg-gray-50"
               }`}
             >
               <h3
@@ -108,7 +108,7 @@ const About = () => {
 
             <div
               className={`p-6 rounded-lg shadow-sm ${
-                theme === "dark" ? "bg-gray-800" : "bg-gray-50"
+                theme === "dark" ? "bg-[#222]" : "bg-gray-50"
               }`}
             >
               <h3
@@ -130,7 +130,7 @@ const About = () => {
 
             <div
               className={`p-6 rounded-lg shadow-sm ${
-                theme === "dark" ? "bg-gray-800" : "bg-gray-50"
+                theme === "dark" ? "bg-[#222]" : "bg-gray-50"
               }`}
             >
               <h3
@@ -155,7 +155,7 @@ const About = () => {
         <div
           className={`p-8 rounded-xl shadow-md border ${
             theme === "dark"
-              ? "bg-gray-800 border-gray-700"
+              ? "bg-[#111] border-[#222]"
               : "bg-white border-gray-200"
           }`}
         >

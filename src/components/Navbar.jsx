@@ -1,22 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { Menu, X, ShoppingCart, Sun, Moon } from "lucide-react";
 import logo from "../assets/logo.png";
-import { useContext } from "react";
 import { CartContext } from "../context/CartContext";
 import { ThemeContext } from "../context/ThemeContext";
+import { AuthContext } from "../context/AuthContext";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const { totalItems } = useContext(CartContext);
   const { theme, toggleTheme } = useContext(ThemeContext);
 
+  const { user } = useContext(AuthContext);
+
   return (
     <>
       {/* Navbar */}
       <nav
         className={`w-full shadow sticky top-0 z-50 ${
-          theme === "dark" ? "bg-black border-b border-gray-800" : "bg-white"
+          theme === "dark" ? "bg-black border-b border-[#222]" : "bg-white"
         }`}
       >
         <div className="container mx-auto px-6 py-4 flex justify-between items-center">
@@ -31,17 +33,48 @@ const Navbar = () => {
             />
           </Link>
 
-          {/* Hamburger Icon */}
-          <button
-            className={`lg:hidden ${
-              theme === "dark" ? "text-gray-300" : "text-gray-700"
-            }`}
-            onClick={() => setOpen(true)}
-          >
-            <Menu size={28} />
-          </button>
+          {/* Mobile icons */}
+          <div className="flex gap-3 lg:hidden">
+            <button
+              onClick={toggleTheme}
+              className={`p-2 rounded-lg ${
+                theme === "dark"
+                  ? "bg-white text-black hover:bg-gray-200"
+                  : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+              }`}
+            >
+              {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
+            </button>
 
-          {/* desktop menu */}
+            {/* Cart */}
+            <Link
+              to="/cart"
+              className={`relative px-2 py-1 rounded-lg border flex items-center gap-2 ${
+                theme === "dark"
+                  ? "border-[#222] text-white hover:bg-[#111]"
+                  : "border-gray-300 text-gray-700 hover:bg-gray-100"
+              }`}
+            >
+              <ShoppingCart size={20} />
+              {totalItems > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-4 w-4 flex items-center justify-center">
+                  {totalItems > 99 ? "99+" : totalItems}
+                </span>
+              )}
+            </Link>
+
+            {/* Hamburger */}
+            <button
+              className={`lg:hidden ${
+                theme === "dark" ? "text-gray-300" : "text-gray-700"
+              }`}
+              onClick={() => setOpen(true)}
+            >
+              <Menu size={28} />
+            </button>
+          </div>
+
+          {/* Desktop Menu */}
           <ul
             className={`hidden lg:flex space-x-8 items-center ${
               theme === "dark" ? "text-white" : "text-gray-700"
@@ -81,44 +114,66 @@ const Navbar = () => {
               </NavLink>
             </li>
 
-            <li>
-              <NavLink
-                to="/login"
-                className={({ isActive }) =>
-                  isActive
-                    ? `px-4 py-2 rounded-xl border font-semibold ${
-                        theme === "dark"
-                          ? "text-black border-white bg-white hover:bg-gray-200"
-                          : "text-black border-black hover:bg-gray-100"
-                      }`
-                    : theme === "dark"
-                    ? "px-4 py-2 rounded-xl border border-gray-800 text-white hover:bg-gray-800"
-                    : "px-4 py-2 rounded-xl border border-gray-300 text-gray-700 hover:bg-gray-100"
-                }
-              >
-                Login
-              </NavLink>
-            </li>
+            {!user && (
+              <>
+                <li>
+                  <NavLink
+                    to="/login"
+                    className={({ isActive }) =>
+                      isActive
+                        ? `px-4 py-2 rounded-xl border font-semibold ${
+                            theme === "dark"
+                              ? "text-black border-white bg-white hover:bg-gray-200"
+                              : "text-black border-black hover:bg-gray-100"
+                          }`
+                        : theme === "dark"
+                        ? "px-4 py-2 rounded-xl border border-[#222] text-white hover:bg-[#111]"
+                        : "px-4 py-2 rounded-xl border border-gray-300 text-gray-700 hover:bg-gray-100"
+                    }
+                  >
+                    Login
+                  </NavLink>
+                </li>
 
-            <li>
-              <Link
-                to="/signup"
-                className={`px-4 py-2 rounded-xl ${
-                  theme === "dark"
-                    ? "bg-white text-black hover:bg-gray-200"
-                    : "bg-black text-white hover:bg-gray-800"
-                }`}
-              >
-                Signup
-              </Link>
-            </li>
+                <li>
+                  <Link
+                    to="/signup"
+                    className={`px-4 py-2 rounded-xl ${
+                      theme === "dark"
+                        ? "bg-white text-black hover:bg-gray-200"
+                        : "bg-black text-white hover:bg-gray-800"
+                    }`}
+                  >
+                    Signup
+                  </Link>
+                </li>
+              </>
+            )}
 
+            {user && (
+              <>
+                <li>
+                  <Link
+                    to="/account"
+                    className={`px-4 py-2 rounded-xl ${
+                      theme === "dark"
+                        ? "bg-white text-black hover:bg-gray-200"
+                        : "bg-gray-900 text-white hover:bg-gray-700"
+                    }`}
+                  >
+                    Account
+                  </Link>
+                </li>
+              </>
+            )}
+
+            {/* Cart */}
             <li>
               <Link
                 to="/cart"
                 className={`relative px-4 py-2 rounded-xl border flex items-center gap-2 ${
                   theme === "dark"
-                    ? "border-gray-800 text-white hover:bg-gray-800"
+                    ? "border-[#222] text-white hover:bg-[#111]"
                     : "border-gray-300 text-gray-700 hover:bg-gray-100"
                 }`}
               >
@@ -131,23 +186,28 @@ const Navbar = () => {
               </Link>
             </li>
 
+            {/* Theme Button */}
             <li>
               <button
                 onClick={toggleTheme}
-                className={`p-2 rounded-lg ${
+                className={`p-2 rounded-lg border cursor-pointer ${
                   theme === "dark"
-                    ? "bg-white text-black hover:bg-gray-200"
-                    : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+                    ? "bg-[#111] text-black hover:bg-[#222]"
+                    : "border-gray-300 text-gray-800 hover:bg-gray-100"
                 }`}
               >
-                {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
+                {theme === "dark" ? (
+                  <Sun size={20} color="white" />
+                ) : (
+                  <Moon size={20} />
+                )}
               </button>
             </li>
           </ul>
         </div>
       </nav>
 
-      {/* Mobile menu */}
+      {/* Mobile Overlay */}
       <div
         onClick={() => setOpen(false)}
         className={`fixed inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-300 ${
@@ -157,6 +217,7 @@ const Navbar = () => {
         } z-40`}
       ></div>
 
+      {/* Mobile Drawer */}
       <div
         className={`fixed top-0 right-0 h-full w-[60%] max-w-sm shadow-xl z-50 transform transition-transform duration-300 ${
           theme === "dark" ? "bg-black border-l border-gray-800" : "bg-white"
@@ -170,88 +231,64 @@ const Navbar = () => {
           <X size={28} />
         </button>
 
-        {/* menu links */}
+        {/* Mobile Links */}
         <ul
           className={`flex flex-col gap-6 px-6 text-lg font-medium ${
             theme === "dark" ? "text-white" : "text-gray-800"
           }`}
         >
-          <NavLink
-            to="/home"
-            onClick={() => setOpen(false)}
-            className={
-              theme === "dark"
-                ? "hover:text-white transition"
-                : "hover:text-black transition"
-            }
-          >
+          <NavLink to="/" onClick={() => setOpen(false)}>
             Home
           </NavLink>
 
-          <NavLink
-            to="/about"
-            onClick={() => setOpen(false)}
-            className={
-              theme === "dark"
-                ? "hover:text-white transition"
-                : "hover:text-black transition"
-            }
-          >
+          <NavLink to="/about" onClick={() => setOpen(false)}>
             About
           </NavLink>
 
-          <NavLink
-            to="/login"
-            onClick={() => setOpen(false)}
-            className={
-              theme === "dark"
-                ? "px-4 py-2 rounded-xl border border-gray-800 hover:bg-gray-800"
-                : "px-4 py-2 rounded-xl border border-gray-300 hover:bg-gray-100"
-            }
-          >
-            Login
-          </NavLink>
+        
+          {!user && (
+            <>
+              <NavLink
+                to="/login"
+                onClick={() => setOpen(false)}
+                className={
+                  theme === "dark"
+                    ? "px-4 py-2 rounded-xl border border-gray-800 hover:bg-gray-800"
+                    : "px-4 py-2 rounded-xl border border-gray-300 hover:bg-gray-100"
+                }
+              >
+                Login
+              </NavLink>
 
-          <Link
-            to="/signup"
-            onClick={() => setOpen(false)}
-            className={
-              theme === "dark"
-                ? "px-4 py-2 rounded-xl bg-white text-black hover:bg-gray-200"
-                : "px-4 py-2 rounded-xl bg-black text-white hover:bg-gray-800"
-            }
-          >
-            Signup
-          </Link>
+              <Link
+                to="/signup"
+                onClick={() => setOpen(false)}
+                className={
+                  theme === "dark"
+                    ? "px-4 py-2 rounded-xl bg-white text-black hover:bg-gray-200"
+                    : "px-4 py-2 rounded-xl bg-black text-white hover:bg-gray-800"
+                }
+              >
+                Signup
+              </Link>
+            </>
+          )}
 
-          <Link
-            to="/cart"
-            onClick={() => setOpen(false)}
-            className={`relative px-4 py-2 rounded-xl border flex items-center gap-2 ${
-              theme === "dark"
-                ? "border-gray-800 hover:bg-gray-800"
-                : "border-gray-300 hover:bg-gray-100"
-            }`}
-          >
-            <ShoppingCart size={20} />
-            Cart
-            {totalItems > 0 && (
-              <span className="bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
-                {totalItems > 99 ? "99+" : totalItems}
-              </span>
-            )}
-          </Link>
-
-          <button
-            onClick={toggleTheme}
-            className={`p-2 rounded-lg ${
-              theme === "dark"
-                ? "bg-white text-black hover:bg-gray-200"
-                : "bg-gray-200 text-gray-800 hover:bg-gray-300"
-            }`}
-          >
-            {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
-          </button>
+          {user && (
+            <>
+              <Link
+                to="/account"
+                onClick={() => setOpen(false)}
+                className={
+                  theme === "dark"
+                    ? "px-4 py-2 rounded-xl bg-white text-black hover:bg-gray-200"
+                    : "px-4 py-2 rounded-xl bg-gray-900 text-white hover:bg-gray-700"
+                }
+              >
+                Account
+              </Link>
+            </>
+          )}
         </ul>
       </div>
     </>
