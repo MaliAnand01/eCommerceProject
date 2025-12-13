@@ -92,7 +92,7 @@ const Navbar = () => {
             </Link>
 
             <button onClick={() => setOpen(true)}>
-              <Menu size={28} />
+              <Menu size={28} color={theme === 'dark' ? 'white' : 'black'} />
             </button>
           </div>
 
@@ -170,10 +170,10 @@ const Navbar = () => {
         `}
       >
         <button className="p-4" onClick={() => setOpen(false)}>
-          <X size={28} />
+          <X size={28} color={theme === 'dark' ? 'white' : 'black'} />
         </button>
 
-        <ul className="flex flex-col gap-6 px-6 text-lg">
+        <ul className={`flex flex-col gap-6 px-6 text-lg ${theme === 'dark' ? 'text-white' : 'text-black'}`}>
           <NavLink to="/" onClick={() => setOpen(false)}>
             Home
           </NavLink>
@@ -204,7 +204,6 @@ const Navbar = () => {
             <Link
               to="/account"
               onClick={() => setOpen(false)}
-              className={primaryBtn}
             >
               Account
             </Link>
