@@ -4,6 +4,7 @@ import Footer from "./components/Footer";
 import { Outlet } from "react-router-dom";
 import { useContext } from "react";
 import { ThemeContext } from "./context/ThemeContext";
+import ScrollToTop from "./components/ScrollToTop";
 
 const Layout = () => {
   const { theme } = useContext(ThemeContext);
@@ -16,8 +17,11 @@ const Layout = () => {
           : "bg-white min-h-screen"
       }
     >
+      <ScrollToTop />
       <Navbar />
-      <main className={theme === "dark" ? "bg-black" : "bg-white"}>
+      <main
+        className={`pt-20 ${theme === "dark" ? "bg-black" : "bg-gray-100"}`}
+      >
         <Outlet />
       </main>
       <Footer />

@@ -1,70 +1,54 @@
-import React from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Pagination, Navigation } from "swiper/modules";
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { ThemeContext } from "../context/ThemeContext";
-
-import "swiper/css";
-import "swiper/css/pagination";
-import "swiper/css/navigation";
+import Aurora from "./Aurora";
 
 const Hero = () => {
   const { theme } = useContext(ThemeContext);
-  const slides = [
-    "/slider1.png",
-    "/slider2.jpg",
-    "/slider3.jpg",
-    "/slider4.jpg",
-    "/slider5.jpg",
-  ];
 
   return (
-    <div className="relative w-full h-[80vh]">
-      {/* Slider */}
-      <Swiper
-        modules={[Autoplay, Pagination, Navigation]}
-        autoplay={{ delay: 2500, disableOnInteraction: false }}
-        pagination={{ clickable: true }}
-        loop={true}
-        className="w-full h-full"
-      >
-        {slides.map((src, i) => (
-          <SwiperSlide key={i}>
-            <img
-              src={src}
-              className="w-full h-full object-cover z-0"
-              alt={`slide-${i}`}
-            />
-          </SwiperSlide>
-        ))}
-      </Swiper>
+    <section className="relative -mt-20 h-[95vh] w-full overflow-hidden">
+      {/* Aurora Background */}
+      <div className="absolute inset-0 z-0">
+        <Aurora
+          colorStops={
+            theme === "dark"
+              ? ["#3A29FF", "#7CFFCB", "#3A29FF"]
+              : ["#FF7AD9", "#FFD36E", "#FF7AD9"]
+          }
+          amplitude={1.2}
+          blend={0.6}
+          speed={0.8}
+        />
+      </div>
 
-      {/* Hero text */}
+      {/* Dark / Light Overlay */}
       <div
-        className={`absolute inset-0 flex flex-col justify-center items-center text-center px-6 z-10 pointer-events-none ${
-          theme === "dark"
-            ? "bg-black/30 text-white"
-            : "bg-black/30 text-white"
+        className={`absolute inset-0 z-10 ${
+          theme === "dark" ? "bg-black/40" : "bg-white/40 backdrop-blur-[2px]"
         }`}
-      >
-        <h1 className="text-4xl md:text-6xl font-bold fade-in">
-          Shop Smarter with ShopEase
+      />
+
+      {/* Hero Content */}
+      <div className="relative z-20 flex h-full flex-col items-center justify-center text-center px-6">
+        <h1 className={`text-4xl md:text-6xl font-bold tracking-tight ${theme === "dark" ? "text-white" : "text-black"}`}>
+          Shop Smarter with <span className={theme === 'dark' ? 'text-blue-400' : 'text-white text-shadow-lg '}>ShopEase</span>
         </h1>
-        <p className="text-lg md:text-xl mt-3 fade-in">
+
+        <p className={`mt-4 max-w-2xl text-lg italic md:text-xl ${theme === 'dark' ? 'text-white' : 'text-black'}`}>
           Premium Products • Best Prices • Fast Delivery
         </p>
+
         <a
-        href="#products"
-          className={`px-10 mt-4 py-3 rounded-xl font-semibold shadow transition duration-300 cursor-pointer hover:scale-105 fade-in pointer-events-auto ${
-            theme === "dark"
-              ? "bg-white text-black hover:bg-gray-200"
-              : "bg-black text-white hover:bg-white hover:text-black"
-          }`}
+          href="#products"
+          className="mt-8 inline-flex items-center justify-center rounded-xl
+            bg-white px-10 py-3 font-semibold text-black
+            shadow-lg transition-all duration-300
+            hover:scale-105 hover:bg-gray-200"
         >
           Shop Now
         </a>
       </div>
-    </div>
+    </section>
   );
 };
 

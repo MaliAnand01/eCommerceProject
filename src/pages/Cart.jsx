@@ -1,8 +1,10 @@
 import { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { CartContext } from "../context/CartContext";
 import { ThemeContext } from "../context/ThemeContext";
 import { Trash2, Plus, Minus, ShoppingBag } from "lucide-react";
+import { AuthContext } from "../context/AuthContext";
+import toast from "react-hot-toast";
 
 const Cart = () => {
   const {
@@ -14,6 +16,18 @@ const Cart = () => {
     clearCart,
   } = useContext(CartContext);
   const { theme } = useContext(ThemeContext);
+  const {user} = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const handleCheckout = (e) =>{
+    e.preventDefault();
+
+    if(!user){
+      toast.error("You must be logged in before checkout!");
+      navigate("/login");
+      return;
+    }
+  }
 
   if (items.length === 0) {
     return (
@@ -238,7 +252,7 @@ const Cart = () => {
                   </div>
                 </div>
 
-                <button className="w-full px-6 py-3 bg-black text-white rounded-lg font-semibold hover:bg-[#222] transition mb-4 cursor-pointer active:scale-95">
+                <button onClick={handleCheckout} className="w-full px-6 py-3 bg-black text-white rounded-lg font-semibold hover:bg-[#222] transition mb-4 cursor-pointer active:scale-95">
                   Proceed to Checkout
                 </button>
 

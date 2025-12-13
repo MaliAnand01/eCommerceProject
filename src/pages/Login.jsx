@@ -54,7 +54,7 @@ const Login = () => {
 
   return (
     <div
-      className={`min-h-screen flex justify-center items-center px-4 ${
+      className={`min-h-[90vh] flex justify-center items-center px-4 ${
         theme === "dark" ? "bg-black" : "bg-gray-100"
       }`}
     >

@@ -20,7 +20,7 @@ const Account = () => {
   return (
     <div
       className={`min-h-screen flex justify-center items-start pt-24 px-4 pb-16 transition-colors duration-300 ${
-        theme === "dark" ? "bg-[#111]" : "bg-gray-200"
+        theme === "dark" ? "bg-black" : "bg-gray-100"
       }`}
     >
       <div

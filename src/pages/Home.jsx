@@ -37,11 +37,17 @@ const Home = () => {
     fetchData();
   }, [searchText]);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setSearchParam(query ? { q: query } : {});
+    }, 400);
+
+    return () => clearTimeout(timer);
+  }, [query, setSearchParam]);
+
   // Update URL query param
   const handleSearch = (e) => {
-    const value = e.target.value;
-    setQuery(value);
-    setSearchParam(value ? { q: value } : {});
+    setQuery(e.target.value);
   };
 
   // Memoize the product cards
@@ -71,7 +77,7 @@ const Home = () => {
       {/* Products Section */}
       <section
         id="products"
-        className={`py-16 ${theme === "dark" ? "bg-black" : "bg-white"}`}
+        className={`py-20 ${theme === "dark" ? "bg-black" : "bg-white"}`}
       >
         <div className="container mx-auto px-5 text-center">
           <h2
@@ -109,8 +115,8 @@ const Home = () => {
               ? Array.from({ length: 8 }).map((_, i) => (
                   <div
                     key={i}
-                    className={`w-full max-w-[300px] mx-auto animate-pulse h-[350px] rounded-xl ${
-                      theme === "dark" ? "bg-gray-800" : "bg-gray-200"
+                    className={`w-full max-w-[400px] mx-auto animate-pulse h-[400px] rounded-xl ${
+                      theme === "dark" ? "bg-[#222]" : "bg-gray-200"
                     }`}
                   ></div>
                 ))
