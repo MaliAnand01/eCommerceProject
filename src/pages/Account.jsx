@@ -1,171 +1,149 @@
-import React, { useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
+import { CartContext } from "../context/CartContext";
 import { ThemeContext } from "../context/ThemeContext";
-import { User, Mail, Calendar, LogOut, Edit } from "lucide-react";
+import { Heart, ShoppingBag, LogOut } from "lucide-react";
+import { toast } from "react-hot-toast";
+
+const tabs = ["Overview", "Orders", "Settings"];
 
 const Account = () => {
   const { user, logoutUser, loading } = useContext(AuthContext);
+  const { items } = useContext(CartContext);
   const { theme } = useContext(ThemeContext);
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!loading && !user) {
-      navigate("/login");
-    }
-  }, [user, loading, navigate]);
+  const [activeTab, setActiveTab] = useState("Overview");
 
-  if (loading) return null; // optional: add loader
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        Loading account...
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        Please login to access your account.
+      </div>
+    );
+  }
+
+  const handleLogout = () => {
+    logoutUser();
+    toast.success("Logged out successfully");
+  };
 
   return (
-    <div
-      className={`min-h-screen flex justify-center items-start pt-24 px-4 pb-16 transition-colors duration-300 ${
-        theme === "dark" ? "bg-black" : "bg-gray-100"
+    <section
+      className={`min-h-screen pt-28 px-4 ${
+        theme === "dark" ? "bg-black text-white" : "bg-gray-50 text-black"
       }`}
     >
-      <div
-        className={`w-full max-w-4xl rounded-2xl shadow-xl p-8 space-y-8 transition-colors duration-300 ${
-            theme === 'dark' ? "bg-[#222]" : "bg-white"
-        }`}
-      >
-        {/* Header */}
-        <div className="flex flex-col items-center space-y-3">
-          <div
-            className={`w-24 h-24 rounded-full flex items-center justify-center text-4xl font-bold text-white ${
-              theme === "dark" ? "bg-gray-700" : "bg-gray-400"
-            }`}
-          >
-            {user.fullName.charAt(0).toUpperCase()}
-          </div>
-          <h1
-            className={`text-2xl font-bold ${
-              theme === "dark" ? "text-white" : "text-gray-900"
-            }`}
-          >
-            {user.fullName}
-          </h1>
-          <p
-            className={`text-gray-500 ${
-              theme === "dark" ? "text-gray-400" : "text-gray-600"
-            }`}
-          >
-            Your personal account info
-          </p>
-        </div>
-
-        {/* Info Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Full Name */}
-          <div
-            className={`flex items-center gap-3 p-4 rounded-lg border transition-colors duration-300 ${
-              theme === "dark"
-                ? "border-[#333] bg-[#111]"
-                : "border-gray-200 bg-white"
-            }`}
-          >
-            <User size={24} className={theme === "dark" ? "text-white" : ""} />
-            <div>
-              <p
-                className={`text-sm ${
-                  theme === "dark" ? "text-gray-400" : "text-gray-600"
-                }`}
-              >
-                Full Name
-              </p>
-              <p
-                className={`font-semibold ${
-                  theme === "dark" ? "text-white" : "text-gray-900"
-                }`}
-              >
-                {user.fullName}
-              </p>
+      <div className="max-w-5xl mx-auto space-y-10">
+        {/* Profile */}
+        <div
+          className={`rounded-3xl p-6 backdrop-blur-xl border transition ${
+            theme === "dark"
+              ? "bg-white/5 border-white/10"
+              : "bg-white/70 border-black/10"
+          }`}
+        >
+          <div className="flex items-center gap-6">
+            <div className="h-20 w-20 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-3xl font-bold text-white">
+              {user.name?.[0]?.toUpperCase()}
             </div>
-          </div>
-
-          {/* Email */}
-          <div
-            className={`flex items-center gap-3 p-4 rounded-lg border transition-colors duration-300 ${
-              theme === "dark"
-                ? "border-[#333] bg-[#111]"
-                : "border-gray-200 bg-white"
-            }`}
-          >
-            <Mail size={24} className={theme === "dark" ? "text-white" : ""} />
             <div>
-              <p
-                className={`text-sm ${
-                  theme === "dark" ? "text-gray-400" : "text-gray-600"
-                }`}
-              >
-                Email
-              </p>
-              <p
-                className={`font-semibold ${
-                  theme === "dark" ? "text-white" : "text-gray-900"
-                }`}
-              >
-                {user.email}
-              </p>
-            </div>
-          </div>
-
-          {/* Created At */}
-          <div
-            className={`flex items-center gap-3 p-4 rounded-lg border transition-colors duration-300 ${
-              theme === "dark"
-                ? "border-[#333] bg-[#111]"
-                : "border-gray-200 bg-white"
-            }`}
-          >
-            <Calendar
-              size={24}
-              className={theme === "dark" ? "text-white" : ""}
-            />
-            <div>
-              <p
-                className={`text-sm ${
-                  theme === "dark" ? "text-gray-400" : "text-gray-600"
-                }`}
-              >
-                Account Created
-              </p>
-              <p
-                className={`font-semibold ${
-                  theme === "dark" ? "text-white" : "text-gray-900"
-                }`}
-              >
-                {user?.createdAt || "Not available"}
-              </p>
+              <h2 className="text-2xl font-semibold">{user.name}</h2>
+              <p className="opacity-70">{user.email}</p>
             </div>
           </div>
         </div>
 
-        {/* Actions */}
-        <div className="flex flex-col md:flex-row justify-between gap-4 mt-6">
-          <button
-            onClick={() => alert("Edit profile coming soon!")}
-            className={`flex items-center justify-center gap-2 px-5 py-3 rounded-lg font-semibold transition-colors duration-300 bg-black text-white`}
-          >
-            <Edit size={18} /> Edit Profile
-          </button>
+        {/* Stats */}
+        <div className="grid sm:grid-cols-3 gap-6">
+          <Stat icon={<ShoppingBag />} label="Orders" value="0" theme={theme} />
+          <Stat icon={<Heart />} label="Wishlist" value="0" theme={theme} />
+          <Stat
+            icon={<ShoppingBag />}
+            label="Cart Items"
+            value={items.length}
+            theme={theme}
+          />
+        </div>
 
-          <button
-            onClick={() => {
-              logoutUser();
-              navigate("/");
-            }}
-            className={`flex items-center justify-center gap-2 px-5 py-3 rounded-lg font-semibold transition-colors duration-300 ${
-              theme === "dark"
-                ? "bg-red-700 text-white hover:bg-red-800"
-                : "bg-red-600 text-white hover:bg-red-700"
-            }`}
-          >
-            <LogOut size={18} /> Logout
-          </button>
+        {/* Tabs */}
+        <div className="flex gap-3">
+          {tabs.map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`px-5 py-2 rounded-full text-sm font-medium transition ${
+                activeTab === tab
+                  ? theme === "dark"
+                    ? "bg-white text-black"
+                    : "bg-black text-white"
+                  : theme === "dark"
+                  ? "bg-white/5 text-white hover:bg-white/10"
+                  : "bg-white text-black hover:bg-gray-100"
+              }`}
+            >
+              {tab}
+            </button>
+          ))}
+        </div>
+
+        {/* Tab Content */}
+        <div
+          className={`rounded-3xl p-6 min-h-[200px] border backdrop-blur-xl transition ${
+            theme === "dark"
+              ? "bg-white/5 border-white/10"
+              : "bg-white/70 border-black/10"
+          }`}
+        >
+          {activeTab === "Overview" && (
+            <p className="opacity-70">
+              Welcome back, <strong>{user.name}</strong> 👋 Manage your account
+              and view your activity here.
+            </p>
+          )}
+
+          {activeTab === "Orders" && (
+            <p className="opacity-70">No orders yet.</p>
+          )}
+
+          {activeTab === "Settings" && (
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-2 px-5 py-2 rounded-full bg-red-500 text-white hover:bg-red-600 transition"
+            >
+              <LogOut size={18} />
+              Logout
+            </button>
+          )}
         </div>
       </div>
-    </div>
+    </section>
   );
 };
+
+const Stat = ({ icon, label, value, theme }) => (
+  <div
+    className={`rounded-2xl p-5 flex items-center gap-4 border backdrop-blur-xl transition ${
+      theme === "dark"
+        ? "bg-white/5 border-white/10"
+        : "bg-white/70 border-black/10"
+    }`}
+  >
+    <div className="p-3 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-500 text-white">
+      {icon}
+    </div>
+    <div>
+      <p className="text-xl font-semibold">{value}</p>
+      <p className="text-sm opacity-70">{label}</p>
+    </div>
+  </div>
+);
 
 export default Account;

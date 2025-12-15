@@ -6,17 +6,20 @@ import { AuthProvider } from "./context/AuthContext";
 import ThemeProvider from "./context/ThemeProvider";
 import CartProvider from "./context/CartProvider";
 import { Toaster } from "react-hot-toast";
+import { ProductProvider } from "./context/ProductContext";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <AuthProvider>
       <ThemeProvider>
-        <CartProvider>
-          <BrowserRouter>
-            <App />
-            <Toaster />
-          </BrowserRouter>
-        </CartProvider>
+        <ProductProvider>
+          <CartProvider>
+            <BrowserRouter>
+              <App />
+              <Toaster />
+            </BrowserRouter>
+          </CartProvider>
+        </ProductProvider>
       </ThemeProvider>
     </AuthProvider>
   </React.StrictMode>

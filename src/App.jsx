@@ -8,6 +8,7 @@ import Product from "./pages/Product";
 import Cart from "./pages/Cart";
 import { Route, Routes } from "react-router-dom";
 import Account from "./pages/Account";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
   return (
@@ -19,7 +20,14 @@ const App = () => {
         <Route path="cart" element={<Cart />} />
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<Signup />} />
-        <Route path="account" element={<Account />} />
+        <Route
+          path="account"
+          element={
+            <ProtectedRoute>
+              <Account />
+            </ProtectedRoute>
+          }
+        />
       </Route>
     </Routes>
   );
