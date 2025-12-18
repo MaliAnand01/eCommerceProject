@@ -31,3 +31,15 @@
   width: 100%;
   height: 100%;
 }
+
+.checkout-input {
+  @apply w-full px-4 py-3 rounded-lg border outline-none transition;
+}
+
+.dark .checkout-input {
+  @apply bg-[#111] border-[#333] text-white placeholder-gray-400 focus:border-white;
+}
+
+.checkout-input {
+  @apply bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-black;
+}

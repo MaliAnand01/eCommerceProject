@@ -45,6 +45,11 @@ const Navbar = () => {
       ? "px-3 py-1 rounded-lg bg-white/10 text-white font-semibold"
       : "px-3 py-1 rounded-lg bg-black/5 text-black font-semibold";
 
+  const navBackdrop =
+    theme === "dark"
+      ? "bg-black/50 backdrop-blur-xl border border-white/20 shadow-[0_8px_30px_rgba(0,0,0,0.4)]"
+      : "bg-white/60 backdrop-blur-xl border border-black/20 shadow-[0_8px_30px_rgba(0,0,0,0.15)]";
+
   return (
     <>
       {/* ================= NAVBAR ================= */}
@@ -54,11 +59,11 @@ const Navbar = () => {
           ${
             isScrolled
               ? theme === "dark"
-                ? "scale-[0.98] bg-black/50 backdrop-blur-xl border border-white/20 shadow-[0_8px_30px_rgba(0,0,0,0.4)]"
-                : "scale-[0.98] bg-white/60 backdrop-blur-xl border border-black/20 shadow-[0_8px_30px_rgba(0,0,0,0.15)]"
+                ? `scale-[0.98] ${navBackdrop}`
+                : `scale-[0.98] ${navBackdrop}`
               : theme === "dark"
-              ? "bg-black/80"
-              : "bg-white/90"
+              ? `${navBackdrop}`
+              : `${navBackdrop}`
           }
           
         `}
@@ -92,7 +97,7 @@ const Navbar = () => {
             </Link>
 
             <button onClick={() => setOpen(true)}>
-              <Menu size={28} color={theme === 'dark' ? 'white' : 'black'} />
+              <Menu size={28} color={theme === "dark" ? "white" : "black"} />
             </button>
           </div>
 
@@ -129,13 +134,13 @@ const Navbar = () => {
 
             {user && (
               <NavLink
-              to="/account"
-              className={({ isActive }) =>
-                isActive ? navLinkActive : navLinkBase
-              }
-            >
-            Account
-            </NavLink>
+                to="/account"
+                className={({ isActive }) =>
+                  isActive ? navLinkActive : navLinkBase
+                }
+              >
+                Account
+              </NavLink>
             )}
 
             <Link to="/cart" className={utilityBtn}>
@@ -170,10 +175,14 @@ const Navbar = () => {
         `}
       >
         <button className="p-4" onClick={() => setOpen(false)}>
-          <X size={28} color={theme === 'dark' ? 'white' : 'black'} />
+          <X size={28} color={theme === "dark" ? "white" : "black"} />
         </button>
 
-        <ul className={`flex flex-col gap-6 px-6 text-lg ${theme === 'dark' ? 'text-white' : 'text-black'}`}>
+        <ul
+          className={`flex flex-col gap-6 px-6 text-lg ${
+            theme === "dark" ? "text-white" : "text-black"
+          }`}
+        >
           <NavLink to="/" onClick={() => setOpen(false)}>
             Home
           </NavLink>
@@ -201,10 +210,7 @@ const Navbar = () => {
           )}
 
           {user && (
-            <Link
-              to="/account"
-              onClick={() => setOpen(false)}
-            >
+            <Link to="/account" onClick={() => setOpen(false)}>
               Account
             </Link>
           )}

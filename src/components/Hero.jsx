@@ -39,7 +39,7 @@ const Hero = () => {
         </p>
 
         <a
-          href="#products"
+          href="#products"  
           className="mt-8 inline-flex items-center justify-center rounded-xl
             bg-white px-10 py-3 font-semibold text-black
             shadow-lg transition-all duration-300

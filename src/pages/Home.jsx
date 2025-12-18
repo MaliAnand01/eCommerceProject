@@ -47,6 +47,7 @@ const Home = () => {
     <>
       <Hero />
       <section
+      id="products"
         className={`py-20 ${theme === "dark" ? "bg-black" : "bg-white"}`}
       >
         <div className="container mx-auto px-5 text-center">

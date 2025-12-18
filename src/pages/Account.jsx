@@ -3,7 +3,6 @@ import { AuthContext } from "../context/AuthContext";
 import { CartContext } from "../context/CartContext";
 import { ThemeContext } from "../context/ThemeContext";
 import { Heart, ShoppingBag, LogOut } from "lucide-react";
-import { toast } from "react-hot-toast";
 
 const tabs = ["Overview", "Orders", "Settings"];
 
@@ -32,7 +31,6 @@ const Account = () => {
 
   const handleLogout = () => {
     logoutUser();
-    toast.success("Logged out successfully");
   };
 
   return (

@@ -9,6 +9,9 @@ import Cart from "./pages/Cart";
 import { Route, Routes } from "react-router-dom";
 import Account from "./pages/Account";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Checkout from "./pages/Checkout";
+import OrderSuccess from "./pages/OrderSuccess";
+
 
 const App = () => {
   return (
@@ -28,7 +31,23 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="checkout"
+          element={
+            <ProtectedRoute>
+              <Checkout />
+            </ProtectedRoute>
+          }
+        />
       </Route>
+      <Route
+        path="order-success"
+        element={
+          <ProtectedRoute>
+            <OrderSuccess/>
+          </ProtectedRoute>
+        }
+      />
     </Routes>
   );
 };

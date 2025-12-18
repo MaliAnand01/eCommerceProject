@@ -16,18 +16,21 @@ const Cart = () => {
     clearCart,
   } = useContext(CartContext);
   const { theme } = useContext(ThemeContext);
-  const {user} = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const handleCheckout = (e) =>{
+  const handleCheckout = (e) => {
     e.preventDefault();
 
-    if(!user){
+    if (!user) {
       toast.error("You must be logged in before checkout!");
       navigate("/login");
       return;
+    }else{
+      navigate("/checkout");
+      return;
     }
-  }
+  };
 
   if (items.length === 0) {
     return (
@@ -106,13 +109,15 @@ const Cart = () => {
                   }`}
                 >
                   <div className="shrink-0">
-                    <img
-                      src={item.thumbnail}
-                      alt={item.title}
-                      className={`w-32 h-32 object-contain rounded-lg border ${
-                        theme === "dark" ? "border-[#222]" : "border-gray-200"
-                      }`}
-                    />
+                    <Link to={`/product/${item.id}`}>
+                      <img
+                        src={item.thumbnail}
+                        alt={item.title}
+                        className={`w-32 h-32 object-contain rounded-lg border ${
+                          theme === "dark" ? "border-[#222]" : "border-gray-200"
+                        }`}
+                      />
+                    </Link>
                   </div>
 
                   <div className="grow flex flex-col justify-between">
@@ -252,7 +257,10 @@ const Cart = () => {
                   </div>
                 </div>
 
-                <button onClick={handleCheckout} className="w-full px-6 py-3 bg-black text-white rounded-lg font-semibold hover:bg-[#222] transition mb-4 cursor-pointer active:scale-95">
+                <button
+                  onClick={handleCheckout}
+                  className="w-full px-6 py-3 bg-black text-white rounded-lg font-semibold hover:bg-[#222] transition mb-4 cursor-pointer active:scale-95"
+                >
                   Proceed to Checkout
                 </button>
 

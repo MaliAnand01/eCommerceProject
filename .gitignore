@@ -1,4 +1,6 @@
 SignupDemo.jsx
+/src/pages/admin
+/src/components/AdminProtectedRoute.jsx
 
 # Logs
 logs
