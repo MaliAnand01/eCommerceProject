@@ -20,13 +20,14 @@ const OrderSuccess = () => {
   return (
     <div
       className={`min-h-screen flex items-center justify-center px-4 ${
-        theme === "dark" ? "bg-black text-white" : "bg-gray-100 text-black"
+        theme === "dark" ? "bg-[#222] text-white" : "bg-gray-100 text-black"
       }`}
     >
-      <div className="max-w-lg w-full bg-white dark:bg-[#222] p-8 rounded-3xl shadow-xl">
+      <div className={`max-w-lg w-full p-8 rounded-3xl shadow-xl
+        ${theme === "dark" ? "bg-black text-white" : "bg-white text-black"}`}>
         <h1 className="text-3xl font-bold mb-4">🎉 Order Placed!</h1>
 
-        <p className="mb-4 text-gray-500">
+        <p className="mb-4">
           Order ID: <b>{order.id}</b>
         </p>
 
@@ -50,7 +51,8 @@ const OrderSuccess = () => {
 
         <button
           onClick={() => navigate("/")}
-          className="mt-6 w-full py-3 rounded-full bg-black text-white hover:bg-[#222]"
+          className={`mt-6 w-full py-3 rounded-full text-white hover:bg-[#111] cursor-pointer
+            ${theme === "dark" ? "bg-[#222]" : "bg-black"}`}
         >
           Continue Shopping
         </button>

@@ -1,6 +1,9 @@
+/* eslint-disable react-hooks/set-state-in-effect */
+/* eslint-disable no-unused-vars */
 import { useContext, useEffect, useState } from "react";
 import { ThemeContext } from "../context/ThemeContext";
 import { CartContext } from "../context/CartContext";
+import { AuthContext } from "../context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -8,6 +11,7 @@ import toast from "react-hot-toast";
 const Checkout = () => {
   const { theme } = useContext(ThemeContext);
   const { items, clearCart } = useContext(CartContext);
+  const { placeOrder } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const [hasSavedAddress, setHasSavedAddress] = useState(false);
@@ -22,7 +26,6 @@ const Checkout = () => {
     formState: { errors },
   } = useForm();
 
-  // Load saved address
   useEffect(() => {
     const saved = localStorage.getItem("savedAddress");
     if (saved) {
@@ -33,14 +36,12 @@ const Checkout = () => {
     }
   }, [setValue]);
 
-  // Prevent checkout without cart
   useEffect(() => {
     if (!placingOrder && items.length === 0) {
       navigate("/cart");
     }
   }, [items, placingOrder, navigate]);
 
-  // Save address
   const handleSaveAddress = (data) => {
     localStorage.setItem("savedAddress", JSON.stringify(data));
     setHasSavedAddress(true);
@@ -48,31 +49,36 @@ const Checkout = () => {
     toast.success("Address saved");
   };
 
-  // Place order
+  const subtotal = items.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
+
   const handlePlaceOrder = () => {
     if (!hasSavedAddress) {
       toast.error("Please save address first");
       return;
     }
 
+    setPlacingOrder(true);
+
+    // ✅ Create order object
     const order = {
-      id: Date.now(),
-      items,
-      address: JSON.parse(localStorage.getItem("savedAddress")),
+      id: "ORD-" + Date.now(),
+      items: items,
       total: subtotal,
-      status: "placed",
       createdAt: new Date().toISOString(),
     };
 
-    setPlacingOrder(true);
-    navigate("/order-success", { state: { order } });
-    clearCart();
-  };
+    // ✅ Save order in user
+    placeOrder(items, subtotal);
 
-  const subtotal = items.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  );
+    // ✅ Clear cart
+    clearCart();
+
+    // ✅ Navigate to order-success with order data
+    navigate("/order-success", { state: { order } });
+  };
 
   return (
     <div
@@ -93,7 +99,7 @@ const Checkout = () => {
           >
             <h2 className="text-xl font-semibold mb-4">Shipping Address</h2>
 
-            {/* SAVED ADDRESS PREVIEW */}
+            {/* SAVED ADDRESS */}
             <div
               className={`transition-all duration-300 overflow-hidden ${
                 !editingAddress ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
@@ -119,7 +125,7 @@ const Checkout = () => {
               )}
             </div>
 
-            {/* ADDRESS FORM (ANIMATED) */}
+            {/* ADDRESS FORM */}
             <div
               className={`transition-all duration-300 overflow-hidden ${
                 editingAddress
@@ -134,19 +140,13 @@ const Checkout = () => {
                 <input
                   className="checkout-input"
                   placeholder="Full Name"
-                  {...register("fullName", { required: "Name required" })}
+                  {...register("fullName", { required: true })}
                 />
 
                 <input
                   className="checkout-input"
                   placeholder="Phone"
-                  {...register("phone", {
-                    required: "Phone required",
-                    pattern: {
-                      value: /^[0-9]{10}$/,
-                      message: "Invalid phone",
-                    },
-                  })}
+                  {...register("phone", { required: true })}
                 />
 
                 <input
@@ -170,21 +170,15 @@ const Checkout = () => {
                 <input
                   className="checkout-input"
                   placeholder="Pincode"
-                  {...register("pincode", {
-                    required: true,
-                    pattern: {
-                      value: /^[0-9]{6}$/,
-                      message: "Invalid pincode",
-                    },
-                  })}
+                  {...register("pincode", { required: true })}
                 />
 
                 <button
                   type="submit"
-                  className={`md:col-span-2 mt-4 py-3 rounded-full font-semibold transition active:scale-95 ${
+                  className={`md:col-span-2 mt-4 py-3 rounded-full font-semibold transition ${
                     theme === "dark"
-                      ? "bg-white text-black hover:bg-gray-200"
-                      : "bg-black text-white hover:bg-[#111]"
+                      ? "bg-white text-black"
+                      : "bg-black text-white"
                   }`}
                 >
                   Save Address
@@ -215,12 +209,12 @@ const Checkout = () => {
                   </Link>
                   <div>
                     <p>{item.title}</p>
-                    <p className="text-sm text-gray-500">
-                      ${item.price} × {item.quantity}
+                    <p className="text-sm opacity-70">
+                      ₹{item.price} × {item.quantity}
                     </p>
                   </div>
                 </div>
-                <p>${(item.price * item.quantity).toFixed(2)}</p>
+                <p>₹{(item.price * item.quantity).toFixed(2)}</p>
               </div>
             ))}
           </div>
@@ -236,28 +230,15 @@ const Checkout = () => {
         >
           <h2 className="text-xl font-semibold mb-6">Order Summary</h2>
 
-          <div className="space-y-3 text-sm">
-            <div className="flex justify-between">
-              <span>Subtotal</span>
-              <span>${subtotal.toFixed(2)}</span>
-            </div>
-
-            <div className="flex justify-between font-bold text-lg">
-              <span>Total</span>
-              <span>${subtotal.toFixed(2)}</span>
-            </div>
+          <div className="flex justify-between text-lg font-bold">
+            <span>Total</span>
+            <span>₹{subtotal.toFixed(2)}</span>
           </div>
 
           <button
             onClick={handlePlaceOrder}
             disabled={!hasSavedAddress || placingOrder}
-            className={`mt-6 w-full py-3 rounded-full font-semibold transition ${
-              !hasSavedAddress || placingOrder
-                ? "opacity-50 cursor-not-allowed"
-                : theme === "dark"
-                ? "bg-white text-black hover:bg-gray-200 active:scale-95"
-                : "bg-black text-white hover:bg-[#111] active:scale-95"
-            }`}
+            className="mt-6 w-full py-3 rounded-full font-semibold bg-black text-white disabled:opacity-50"
           >
             {placingOrder ? "Placing Order..." : "Place Order"}
           </button>

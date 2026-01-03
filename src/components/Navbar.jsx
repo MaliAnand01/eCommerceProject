@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { Menu, X, ShoppingCart, Sun, Moon } from "lucide-react";
+import { Menu, X, ShoppingCart, Sun, Moon, CircleUserRound  } from "lucide-react";
 import logo from "../assets/logo.png";
 import { CartContext } from "../context/CartContext";
 import { ThemeContext } from "../context/ThemeContext";
@@ -139,7 +139,7 @@ const Navbar = () => {
                   isActive ? navLinkActive : navLinkBase
                 }
               >
-                Account
+                <CircleUserRound />
               </NavLink>
             )}
 
