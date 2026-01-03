@@ -7,6 +7,7 @@ import ThemeProvider from "./context/ThemeProvider";
 import CartProvider from "./context/CartProvider";
 import { Toaster } from "react-hot-toast";
 import { ProductProvider } from "./context/ProductContext";
+import ErrorBoundary from "./components/ErrorBoundary.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -15,7 +16,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <ProductProvider>
           <CartProvider>
             <BrowserRouter>
+            <ErrorBoundary>
               <App />
+            </ErrorBoundary>
               <Toaster />
             </BrowserRouter>
           </CartProvider>

@@ -11,7 +11,7 @@ import Account from "./pages/Account";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Checkout from "./pages/Checkout";
 import OrderSuccess from "./pages/OrderSuccess";
-
+import ErrorScreen from "./components/ErrorScreen";
 
 const App = () => {
   return (
@@ -23,6 +23,8 @@ const App = () => {
         <Route path="cart" element={<Cart />} />
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<Signup />} />
+
+        <Route path="*" element={<ErrorScreen message="Page not found" />} />
         <Route
           path="account"
           element={
@@ -44,7 +46,7 @@ const App = () => {
         path="order-success"
         element={
           <ProtectedRoute>
-            <OrderSuccess/>
+            <OrderSuccess />
           </ProtectedRoute>
         }
       />
